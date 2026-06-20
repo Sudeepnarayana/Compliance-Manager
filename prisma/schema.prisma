@@ -1,0 +1,91 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Role {
+  ADMIN
+  HR
+  PAYROLL
+  RECRUITER
+  ACCOUNTING
+  MANAGER
+  USER
+}
+
+model User {
+  id           String            @id @default(uuid())
+  name         String?
+  email        String            @unique
+  passwordHash String
+  role         Role              @default(USER)
+  status       String            @default("ACTIVE") // ACTIVE, INACTIVE
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+  profile      Profile?
+  payroll      PayrollChecklist?
+  disputes     PaymentDispute[]
+  auditLogs    AuditLog[]
+}
+
+model Profile {
+  id         String   @id @default(uuid())
+  userId     String   @unique
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  firstName  String
+  lastName   String
+  phone      String?
+  department String?
+  jobTitle   String?
+  joinedDate DateTime @default(now())
+}
+
+model PayrollChecklist {
+  id               String    @id @default(uuid())
+  userId           String    @unique
+  user             User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  visaStatus       String    @default("PENDING") // PENDING, VERIFIED, EXPIRED, NOT_REQUIRED
+  visaExpiry       DateTime?
+  directDepositSet Boolean   @default(false)
+  stateRegistered  Boolean   @default(false)
+  payrollHold      Boolean   @default(false)
+  lastChecked      DateTime  @default(now())
+}
+
+model OfferLetter {
+  id             String   @id @default(uuid())
+  candidateName  String
+  candidateEmail String
+  roleTitle      String
+  salary         Float
+  status         String   @default("DRAFT") // DRAFT, SENT, HR_APPROVED, CANDIDATE_ACCEPTED, REJECTED
+  createdBy      String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model PaymentDispute {
+  id            String   @id @default(uuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  amount        Float
+  status        String   @default("OPEN") // OPEN, UNDER_REVIEW, RESOLVED
+  disputeReason String
+  resolution    String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  action    String
+  resource  String
+  details   String
+  timestamp DateTime @default(now())
+}
