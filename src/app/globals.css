@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
   --canvas-bg: #f8fafc;
   --card-bg: #ffffff;
