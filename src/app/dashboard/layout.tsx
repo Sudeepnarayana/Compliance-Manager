@@ -129,11 +129,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   const visibleNavItems = navItems.filter((item) => item.roles.includes(role));
 
-  const mockNotifications = [
+  const [notifications, setNotifications] = useState([
     { id: 1, title: 'Visa Expiry Alert', message: 'Carlos Mendez (Recruiter/Staff) visa expires in 5 days.', type: 'critical' },
     { id: 2, title: 'Payroll Hold Activated', message: 'HR hold activated on Bob Johnson due to Direct Deposit.', type: 'warning' },
     { id: 3, title: 'Dispute Resolved', message: 'Dispute dispute-3 resolved by Accounting Lead Mark.', type: 'success' },
-  ];
+  ]);
 
   return (
     <div className="min-h-screen flex flex-col bg-canvas-bg text-text-main transition-colors duration-200">
@@ -187,37 +187,50 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               className="p-2 rounded-lg hover:bg-slate-800 transition-colors text-nav-text relative cursor-pointer"
             >
               <Bell className="h-4 w-4" />
-              <span className="absolute top-1 right-1 h-2 w-2 rounded-full bg-status-danger animate-pulse"></span>
+              {notifications.length > 0 && (
+                <span className="absolute top-1 right-1 h-2 w-2 rounded-full bg-status-danger animate-pulse"></span>
+              )}
             </button>
 
             {notificationsOpen && (
-              <div className="absolute right-0 mt-2.5 w-80 bg-card-bg border border-border-main rounded-xl shadow-2xl overflow-hidden z-40 relative">
+              <div className="absolute right-0 mt-2.5 w-80 bg-card-bg border border-border-main rounded-xl shadow-2xl overflow-hidden z-40">
                 <div className="px-4 py-3 bg-canvas-bg border-b border-border-main flex justify-between items-center">
                   <h4 className="text-xs font-bold text-text-main uppercase tracking-wider">Compliance Notifications</h4>
                   <span className="text-[10px] bg-status-danger/10 text-status-danger font-bold px-1.5 py-0.5 rounded">
-                    3 Active
+                    {notifications.length} Active
                   </span>
                 </div>
                 <div className="divide-y divide-border-main max-h-72 overflow-y-auto">
-                  {mockNotifications.map((n) => (
-                    <div key={n.id} className="p-3 text-xs hover:bg-canvas-bg transition-colors">
-                      <div className="flex justify-between items-center mb-1">
-                        <span className={`font-bold ${
-                          n.type === 'critical' ? 'text-status-danger' : n.type === 'warning' ? 'text-status-warning' : 'text-status-success'
-                        }`}>
-                          {n.title}
-                        </span>
-                        <span className="text-[9px] text-text-muted">Just now</span>
-                      </div>
-                      <p className="text-text-muted text-[11px] leading-relaxed">{n.message}</p>
+                  {notifications.length === 0 ? (
+                    <div className="p-4 text-center text-text-muted text-xs">
+                      No active notifications
                     </div>
-                  ))}
+                  ) : (
+                    notifications.map((n) => (
+                      <div key={n.id} className="p-3 text-xs hover:bg-canvas-bg transition-colors">
+                        <div className="flex justify-between items-center mb-1">
+                          <span className={`font-bold ${
+                            n.type === 'critical' ? 'text-status-danger' : n.type === 'warning' ? 'text-status-warning' : 'text-status-success'
+                          }`}>
+                            {n.title}
+                          </span>
+                          <span className="text-[9px] text-text-muted">Just now</span>
+                        </div>
+                        <p className="text-text-muted text-[11px] leading-relaxed">{n.message}</p>
+                      </div>
+                    ))
+                  )}
                 </div>
-                <div className="px-4 py-2 border-t border-border-main bg-canvas-bg text-center">
-                  <button className="text-[11px] font-bold text-primary hover:underline cursor-pointer">
-                    Clear all items
-                  </button>
-                </div>
+                {notifications.length > 0 && (
+                  <div className="px-4 py-2 border-t border-border-main bg-canvas-bg text-center">
+                    <button
+                      onClick={() => setNotifications([])}
+                      className="text-[11px] font-bold text-primary hover:underline cursor-pointer"
+                    >
+                      Clear all items
+                    </button>
+                  </div>
+                )}
               </div>
             )}
           </div>
@@ -239,7 +252,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             </button>
 
             {profileDropdownOpen && (
-              <div className="absolute right-0 mt-2.5 w-56 bg-card-bg border border-border-main rounded-xl shadow-2xl py-1.5 z-40 relative">
+              <div className="absolute right-0 mt-2.5 w-56 bg-card-bg border border-border-main rounded-xl shadow-2xl py-1.5 z-40">
                 <div className="px-4 py-2.5 border-b border-border-main">
                   <p className="text-xs font-bold text-text-main truncate">{session.user.name}</p>
                   <p className="text-[10px] text-text-muted truncate mt-0.5">{session.user.email}</p>
