@@ -34,6 +34,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
+  const [notifications, setNotifications] = useState([
+    { id: 1, title: 'Visa Expiry Alert', message: 'Carlos Mendez (Recruiter/Staff) visa expires in 5 days.', type: 'critical' },
+    { id: 2, title: 'Payroll Hold Activated', message: 'HR hold activated on Bob Johnson due to Direct Deposit.', type: 'warning' },
+    { id: 3, title: 'Dispute Resolved', message: 'Dispute dispute-3 resolved by Accounting Lead Mark.', type: 'success' },
+  ]);
 
   const notificationsRef = useRef<HTMLDivElement>(null);
   const profileRef = useRef<HTMLDivElement>(null);
@@ -128,12 +133,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   ];
 
   const visibleNavItems = navItems.filter((item) => item.roles.includes(role));
-
-  const [notifications, setNotifications] = useState([
-    { id: 1, title: 'Visa Expiry Alert', message: 'Carlos Mendez (Recruiter/Staff) visa expires in 5 days.', type: 'critical' },
-    { id: 2, title: 'Payroll Hold Activated', message: 'HR hold activated on Bob Johnson due to Direct Deposit.', type: 'warning' },
-    { id: 3, title: 'Dispute Resolved', message: 'Dispute dispute-3 resolved by Accounting Lead Mark.', type: 'success' },
-  ]);
 
   return (
     <div className="min-h-screen flex flex-col bg-canvas-bg text-text-main transition-colors duration-200">
