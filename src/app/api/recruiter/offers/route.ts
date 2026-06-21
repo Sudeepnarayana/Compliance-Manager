@@ -11,8 +11,9 @@ async function checkRecruiterOrAdmin() {
 }
 
 export async function GET() {
-  if (!(await checkRecruiterOrAdmin())) {
-    return NextResponse.json({ error: 'Unauthorized. Recruiter privilege required.' }, { status: 403 });
+  const session = await getServerSession(authOptions);
+  if (!session?.user || !['RECRUITER', 'MANAGER', 'ADMIN'].includes(session.user.role)) {
+    return NextResponse.json({ error: 'Unauthorized. Privilege required.' }, { status: 403 });
   }
 
   try {
