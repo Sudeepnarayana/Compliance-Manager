@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { FileText, Send, CheckSquare, PlusCircle, ArrowRight, UserPlus, RefreshCw, BadgeAlert } from 'lucide-react';
+import { CustomSelect } from '@/components/CustomSelect';
 
 interface OfferItem {
   id: string;
@@ -361,18 +362,17 @@ export default function RecruiterPage() {
                     <label className="block text-xs font-bold text-text-muted uppercase mb-1">
                       Corporate Job Title
                     </label>
-                    <select
-                      name="roleTitle"
+                    <CustomSelect
                       value={formData.roleTitle}
-                      onChange={handleInputChange}
-                      className="w-full px-3 py-2 border border-border-main rounded-xl bg-canvas-bg text-text-main text-xs focus:ring-1 focus:ring-primary focus:outline-none font-semibold"
-                    >
-                      <option value="Consultant Engineer">Consultant Engineer</option>
-                      <option value="Senior System Engineer">Senior System Engineer</option>
-                      <option value="Project Manager">Project Manager</option>
-                      <option value="HR Advisor">HR Advisor</option>
-                      <option value="Accounting Analyst">Accounting Analyst</option>
-                    </select>
+                      onChange={(val) => setFormData(prev => ({ ...prev, roleTitle: val }))}
+                      options={[
+                        { value: 'Consultant Engineer', label: 'Consultant Engineer' },
+                        { value: 'Senior System Engineer', label: 'Senior System Engineer' },
+                        { value: 'Project Manager', label: 'Project Manager' },
+                        { value: 'HR Advisor', label: 'HR Advisor' },
+                        { value: 'Accounting Analyst', label: 'Accounting Analyst' },
+                      ]}
+                    />
                   </div>
                   <div>
                     <label className="block text-xs font-bold text-text-muted uppercase mb-1">

@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Users, CheckCircle2, AlertCircle, Calendar, RefreshCw, Edit3 } from 'lucide-react';
+import { CustomSelect } from '@/components/CustomSelect';
 
 interface ChecklistItem {
   id: string;
@@ -284,16 +285,16 @@ export default function HRCompliancePage() {
                 <label className="block text-xs font-bold text-text-muted uppercase mb-1">
                   Visa Verification Status
                 </label>
-                <select
+                <CustomSelect
                   value={editForm.visaStatus}
-                  onChange={(e) => setEditForm(prev => ({ ...prev, visaStatus: e.target.value }))}
-                  className="w-full px-3 py-2 border border-border-main rounded-xl bg-canvas-bg text-text-main text-xs focus:ring-1 focus:ring-primary focus:outline-none"
-                >
-                  <option value="PENDING">PENDING</option>
-                  <option value="VERIFIED">VERIFIED</option>
-                  <option value="EXPIRED">EXPIRED</option>
-                  <option value="NOT_REQUIRED">NOT REQUIRED</option>
-                </select>
+                  onChange={(val) => setEditForm(prev => ({ ...prev, visaStatus: val }))}
+                  options={[
+                    { value: 'PENDING', label: 'PENDING' },
+                    { value: 'VERIFIED', label: 'VERIFIED' },
+                    { value: 'EXPIRED', label: 'EXPIRED' },
+                    { value: 'NOT_REQUIRED', label: 'NOT REQUIRED' },
+                  ]}
+                />
               </div>
 
               <div>

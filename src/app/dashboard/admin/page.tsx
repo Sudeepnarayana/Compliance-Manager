@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Shield, Users, ShieldAlert, CheckCircle, XCircle, Search, RefreshCw } from 'lucide-react';
+import { CustomSelect } from '@/components/CustomSelect';
 
 interface UserItem {
   id: string;
@@ -246,17 +247,12 @@ export default function AdminPage() {
                             )}
                           </td>
                           <td className="px-6 py-4">
-                            <select
+                            <CustomSelect
                               value={userItem.role}
-                              onChange={(e) => handleRoleChange(userItem.id, e.target.value)}
-                              className="px-2.5 py-1.5 border border-border-main rounded-lg text-xs bg-canvas-bg font-semibold text-text-main focus:ring-1 focus:ring-primary focus:outline-none"
-                            >
-                              {rolesList.map((r) => (
-                                <option key={r} value={r}>
-                                  {r}
-                                </option>
-                              ))}
-                            </select>
+                              onChange={(val) => handleRoleChange(userItem.id, val)}
+                              options={rolesList.map((r) => ({ value: r, label: r }))}
+                              className="w-36"
+                            />
                           </td>
                           <td className="px-6 py-4">
                             <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold ${

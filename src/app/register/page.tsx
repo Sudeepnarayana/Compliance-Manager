@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Shield, Mail, Lock, User, Briefcase, Users, CheckCircle, AlertCircle, ArrowLeft } from 'lucide-react';
+import { CustomSelect } from '@/components/CustomSelect';
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -203,19 +204,12 @@ export default function RegisterPage() {
                   <label htmlFor="role" className="block text-xs font-semibold text-text-main">
                     Corporate Role
                   </label>
-                  <select
-                    id="role"
-                    name="role"
+                  <CustomSelect
                     value={formData.role}
-                    onChange={handleChange}
-                    className="mt-1 block w-full px-3 py-2 border border-border-main rounded-xl bg-canvas-bg text-text-main text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
-                  >
-                    {roles.map((r) => (
-                      <option key={r.value} value={r.value}>
-                        {r.label}
-                      </option>
-                    ))}
-                  </select>
+                    onChange={(val) => setFormData((prev) => ({ ...prev, role: val }))}
+                    options={roles}
+                    className="mt-1"
+                  />
                 </div>
 
                 <div>
